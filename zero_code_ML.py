@@ -139,8 +139,8 @@ if uploaded_file is not None:
                 st.text(classification_report(y_test, y_pred))
 
 else:
-    filename = "Kernel_Ridge_Regression_Data.csv"
-    data = pd.read_csv(filename)
+    uri = "https://raw.githubusercontent.com/saswatnayak1998/zero_code_ML/main/Kernel_Ridge_Regression_Data.csv"
+    data = pd.read_csv(uri)
     if data is not None:
         st.write(data.head())
 
