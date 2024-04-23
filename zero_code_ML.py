@@ -9,7 +9,6 @@ from sklearn.svm import SVR, SVC
 from sklearn.metrics import mean_squared_error, accuracy_score, f1_score, classification_report
 import altair as alt
 
-# Function to plot parity plot using Altair for regression tasks
 def plot_parity(y_true, y_pred):
     df = pd.DataFrame({
         'Actual': y_true,
@@ -28,7 +27,6 @@ def plot_parity(y_true, y_pred):
     chart = chart.properties(width=600, height=600).interactive()
     st.altair_chart(chart, use_container_width=True)
 
-# Function to plot data using Altair
 def plot_data(X, y):
     df = pd.DataFrame({
         'Feature': X.squeeze(),
@@ -45,10 +43,9 @@ def plot_data(X, y):
     ).interactive()
     st.altair_chart(chart, use_container_width=True)
 
-# Streamlit user interface
-st.title('Zero Code Machine Learning')
+st.title('Zero Code Machine Learning- Saswat K Nayak')
 task_type = st.radio('Select Task Type', ('Regression', 'Classification'))
-uploaded_file = st.file_uploader("Choose a CSV file", type="csv")
+uploaded_file = st.file_uploader("Choose a CSV file. Make sure the last column is the Y value and the rest are Xs. All columns should be numerical.", type="csv")
 
 if uploaded_file is not None:
     data = pd.read_csv(uploaded_file)
@@ -98,7 +95,6 @@ if uploaded_file is not None:
             if 'SVM' in model_option:
                 kernel_option = st.selectbox('Select Kernel Type', ['linear', 'poly', 'rbf', 'sigmoid'])
 
-        # Create and train model
         if st.button('Train Model'):
             model_kwargs = {'kernel': kernel_option} if kernel_option else {}
             if kernel_option in ['polynomial', 'sigmoid']:
@@ -144,23 +140,18 @@ else:
     if data is not None:
         st.write(data.head())
 
-        # Extracting features and target from the data
         X = data.iloc[:, :-1]
         y = data.iloc[:, -1]
 
-        # Check if the data is 2D and plot if true
         if X.shape[1] == 1:
             plot_data(X, y)
 
-        # Splitting the data
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-        # Feature scaling
         scaler = StandardScaler()
         X_train_scaled = scaler.fit_transform(X_train)
         X_test_scaled = scaler.transform(X_test)
 
-        # Model and kernel selection
         if task_type == 'Regression':
             model_option = st.selectbox(
                 'Select Model Type',
